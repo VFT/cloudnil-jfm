@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:cloud="http://schema.cloudfoundry.org/spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+						http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+						http://www.springframework.org/schema/context
+        				http://www.springframework.org/schema/context/spring-context.xsd
+        				http://schema.cloudfoundry.org/spring http://schema.cloudfoundry.org/spring/cloudfoundry-spring.xsd">
+	<!-- 加载配置文件 -->
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
+        <property name="ignoreResourceNotFound" value="true" />  
+        <property name="locations">
+        	<list>
+        		<value>classpath:/config/others/application_config.properties</value>
+        		<value>classpath:/config/others/cas-client.properties</value>
+        	</list>
+        </property>
+    </bean>
+	<bean id="mongo" class="org.springframework.data.mongodb.core.MongoFactoryBean">
+    	<property name="host" value="${mongo.host}"/>
+    	<property name="port" value="${mongo.port}"/>
+  	</bean>
+  	<bean id="userCredentials" class="org.springframework.data.authentication.UserCredentials">
+    	<constructor-arg name="username" value="${mongo.username}" />
+		<constructor-arg name="password" value="${mongo.password}" />
+  	</bean>
+	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg name="mongo" ref="mongo" />
+		<constructor-arg name="databaseName" value="${mongo.db}" />
+		<constructor-arg name="userCredentials" ref="userCredentials" />
+	</bean>
+<!--  	<cloud:mongo-db-factory id="mongoDbFactory" />
+
+	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg ref="mongoDbFactory" />
+	</bean> -->
+	<!-- 启用注解自动扫描，不扫描@Controller，在Spring-servlet中配置 -->
+	<context:annotation-config />
+	<context:component-scan base-package="com.cloudnil" annotation-config="true">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+	<!-- 启用注解AOP  -->
+	<aop:aspectj-autoproxy />
+	<!-- 国际化配置 -->
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="classpath:${config.messagesFolder}" />
+		<property name="defaultEncoding" value="UTF-8" />
+	</bean>
+	<!-- 用于持有ApplicationContext,可以使用SpringContextHolder.getBean('xxxx')的静态方法得到spring bean对象 -->
+	<bean class="com.cloudnil.framework.utils.common.SpringContextHolder" lazy-init="false" />
+</beans>

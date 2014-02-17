@@ -1,0 +1,47 @@
+.icon_home_tab{
+	background-image:url('../../resources/images/button/home.png')!important;
+}
+
+.icon_find{
+	background-image:url('../../resources/images/button/find.png')!important;
+}
+
+.icon_logout{
+	background-image:url('../../resources/images/button/logout.png')!important;
+}
+
+.icon_key{
+	background-image:url('../../resources/images/button/set.png')!important;
+}
+
+.icon_add_img{
+	background-image:url('../../resources/images/button/add.png')!important;
+}
+
+.icon_edit_img{
+	background-image:url('../../resources/images/button/edit.png')!important;
+}
+
+.icon_delete_img{
+	background-image:url('../../resources/images/button/delete.png')!important;
+}
+
+.icon_edit_img{
+	background-image:url('../../resources/images/button/edit.png')!important;
+}
+
+.icon_error_img{
+	background-image:url('../../resources/images/button/error.png')!important;
+}
+
+.icon_accept_img{
+	background-image:url(../../resources/images/button/accept.png)!important;
+}
+
+.icon_cancel_img{
+	background-image:url('../../resources/images/button/cancel.png')!important;
+}
+
+.icon_refresh_img{
+	background-image:url('../../resources/images/button/refresh.png')!important;
+}
