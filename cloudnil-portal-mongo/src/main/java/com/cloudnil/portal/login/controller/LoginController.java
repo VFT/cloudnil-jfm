@@ -7,10 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.cloudnil.extension.common.ApplicationContext;
 import com.cloudnil.extension.common.PortalConstants;
@@ -26,7 +25,7 @@ import com.cloudnil.portal.user.model.User;
  * @author 史绍虎
  * <p>Date: 2012-6-15 下午3:00:41</p>
  */
-@Controller
+@RestController
 public class LoginController extends BaseController {
 	private final static Logger log = LoggerFactory.getLogger(LoginController.class);
 	@Autowired
@@ -39,7 +38,6 @@ public class LoginController extends BaseController {
 	 * @return ExtReturn 登陆结果信息
 	 */
 	@RequestMapping(value="/login.do")
-	@ResponseBody
 	public Object login(@RequestParam(required=false) String userName, @RequestParam(required=false) String password){
 //		User u=new User();
 //		u.setCode("SLC001");
@@ -73,7 +71,6 @@ public class LoginController extends BaseController {
 	 * @return ExtReturn
 	 */
 	@RequestMapping(value="/loginout.do")
-	@ResponseBody
 	public Object loginOut(){
 		ApplicationContext.Login_User_Map.remove(((User)this.getSession().getAttribute(PortalConstants.CURRENT_USER)).getUserName());
 		this.getSession().removeAttribute(PortalConstants.CURRENT_USER);
@@ -86,7 +83,6 @@ public class LoginController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value="/apps.do")
-	@ResponseBody
 	public Object getApps() {
 		User user=(User)this.getSession().getAttribute(PortalConstants.CURRENT_USER);
 		List<Menu> appList=new ArrayList<Menu>();
@@ -104,7 +100,6 @@ public class LoginController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/menu.do")
-	@ResponseBody
 	public Object getTreeMenu(@RequestParam(required=false) String appId) {
 		User user=(User)this.getSession().getAttribute(PortalConstants.CURRENT_USER);
 		//获取全部菜单数据
