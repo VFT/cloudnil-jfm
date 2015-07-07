@@ -1,4 +1,4 @@
-package com.cloudnil.portal.login.controller;
+package com.venusource.portal.login.controller;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,25 +7,26 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cloudnil.extension.common.ApplicationContext;
-import com.cloudnil.extension.common.PortalConstants;
-import com.cloudnil.framework.core.controller.BaseController;
-import com.cloudnil.framework.core.model.ExtReturn;
-import com.cloudnil.framework.core.model.TreeUtil;
-import com.cloudnil.portal.login.service.LoginService;
-import com.cloudnil.portal.menu.model.Menu;
-import com.cloudnil.portal.user.model.User;
+import com.venusource.extension.common.ApplicationContext;
+import com.venusource.extension.common.PortalConstants;
+import com.venusource.framework.core.controller.BaseController;
+import com.venusource.framework.core.model.ExtReturn;
+import com.venusource.framework.core.model.TreeUtil;
+import com.venusource.portal.login.service.LoginService;
+import com.venusource.portal.menu.model.Menu;
+import com.venusource.portal.user.model.User;
 /**
  * <p>ClassName: LoginController</p>
  * <p>Description: 处理用户登陆、菜单资源加载、退出登陆等操作的Action</p>
  * @author 史绍虎
  * <p>Date: 2012-6-15 下午3:00:41</p>
  */
-@RestController
+@Controller
 public class LoginController extends BaseController {
 	private final static Logger log = LoggerFactory.getLogger(LoginController.class);
 	@Autowired
@@ -38,14 +39,8 @@ public class LoginController extends BaseController {
 	 * @return ExtReturn 登陆结果信息
 	 */
 	@RequestMapping(value="/login.do")
+	@ResponseBody
 	public Object login(@RequestParam(required=false) String userName, @RequestParam(required=false) String password){
-//		User u=new User();
-//		u.setCode("SLC001");
-//		u.setAge((short)15);
-//		u.setCnName("shishaohu");
-//		u.setUserName("tiger435");
-//		u.setPassword(this.MD5Password("123456"));
-//		service.save(u);
 		if (StringUtils.isBlank(userName)) {
 			return new ExtReturn(false, this.getMessage("common.account.notBlank"));
 		}
@@ -71,6 +66,7 @@ public class LoginController extends BaseController {
 	 * @return ExtReturn
 	 */
 	@RequestMapping(value="/loginout.do")
+	@ResponseBody
 	public Object loginOut(){
 		ApplicationContext.Login_User_Map.remove(((User)this.getSession().getAttribute(PortalConstants.CURRENT_USER)).getUserName());
 		this.getSession().removeAttribute(PortalConstants.CURRENT_USER);
@@ -83,6 +79,7 @@ public class LoginController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value="/apps.do")
+	@ResponseBody
 	public Object getApps() {
 		User user=(User)this.getSession().getAttribute(PortalConstants.CURRENT_USER);
 		List<Menu> appList=new ArrayList<Menu>();
@@ -100,6 +97,7 @@ public class LoginController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/menu.do")
+	@ResponseBody
 	public Object getTreeMenu(@RequestParam(required=false) String appId) {
 		User user=(User)this.getSession().getAttribute(PortalConstants.CURRENT_USER);
 		//获取全部菜单数据
